@@ -20,3 +20,6 @@ Merge K Lists with n elements
 
 5.)
 Hash Tables using quadratic open addressing
+
+6.)
+Dynamic order statistics(os-select and os-delete)

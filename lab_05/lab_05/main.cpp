@@ -171,14 +171,14 @@ void set_tests() {
 	printf("Was inserted? %d\n", set->insert(14));
 	printf("Was inserted? %d\n", set->insert(67));
 
-	printf("Does exist? %d\n", set->find(9));
-	printf("Does exist? %d\n", set->find(6));
-	printf("Does exist? %d\n", set->find(14));
-	printf("Does exist? %d\n", set->find(67));
+	printf("Does it exist? %d\n", set->find(9));
+	printf("Does it exist? %d\n", set->find(6));
+	printf("Does it exist? %d\n", set->find(14));
+	printf("Does it exist? %d\n", set->find(67));
 
-	printf("Does exist? %d\n", set->find(12));
-	printf("Does exist? %d\n", set->find(15));
-	printf("Does exist? %d\n", set->find(1));
+	printf("Does it exist? %d\n", set->find(12));
+	printf("Does it exist? %d\n", set->find(15));
+	printf("Does it exist? %d\n", set->find(1));
 
 	delete set;
 }
@@ -201,12 +201,12 @@ void randomize_array(T* array, uint32_t size) {
 	}
 }
 
-void analysis() {
+void analysis(uint32_t measurements = 5) {
 	const char* file_name = "results.csv";
 	FILE* fd = fopen(file_name, "w");
 
 	if (fd == NULL)
-		throw "File no opened.";
+		throw "File not opened.";
 
 	const char* header =
 		"Load factor(alpha)," \
