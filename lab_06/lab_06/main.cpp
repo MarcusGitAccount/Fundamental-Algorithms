@@ -110,6 +110,7 @@ void os_delete(TreeNode** root, TreeNode* node, int n = 0) {
 
 		while (successor->left != NULL) {
 			profiler.countOperation("delete", n, 1);
+			successor->size--;
 			successor = successor->left;
 		}
 
