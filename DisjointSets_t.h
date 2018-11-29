@@ -18,14 +18,14 @@ template <typename T>
 struct DisjointSet {
 	DisjointSet() {}
 
-	SetNode<T>* make_set(int key) {
-		SetNode<T>* node = new SetNode(key);
+	static SetNode<T>* make_set(int key) {
+		SetNode<T>* node = new SetNode<T>(key);
 
 		node->parent = node;
 		return node;
 	}
 
-	SetNode<T>* find_set(SetNode<T>* node) {
+	static SetNode<T>* find_set(SetNode<T>* node) {
 		if (node->parent == node)
 			return node;
 
@@ -33,11 +33,11 @@ struct DisjointSet {
 		// so further searches for this node will execute in O(1) time
 		SetNode<T>* root = find_set(node->parent);
 
-		node->parent = node;
-		return node;
+		node->parent = root;
+		return root;
 	}
 
-	SetNode<T>* union_sets(SetNode<T>* first, SetNode<T>* second) {
+	static SetNode<T>* union_sets(SetNode<T>* first, SetNode<T>* second) {
 		return link_sets(
 			find_set(first),
 			find_set(second)
@@ -46,15 +46,17 @@ struct DisjointSet {
 
 private:
 	// Link one set to the other one, return it and increse its rank if needed
-	SetNode<T>* link_sets(SetNode<T>* first, SetNode<T>* second) {
-		if (first->rank < second->rank)
+	static SetNode<T>* link_sets(SetNode<T>* first, SetNode<T>* second) {
+		if (first->rank < second->rank) {
 			first->parent = second;
-		else if (second->rank > first->rank)
-			second->parent = first;
-		else {
-			second->parent = first;
-			first->rank++;
+			return second;
 		}
+			
+		second->parent = first;
+		if (first->rank == second->rank)
+			first->rank++;
+		
+		return first;
 	}
 };
 
