@@ -3,7 +3,7 @@
 #include "../../DirectedGraph_t.h"
 #include "../../Queue_t.h"
 
-#define TEST_ALGORITHMS
+// #define TEST_ALGORITHMS
 
 #define count_op(line, size, count) \
 	if (line != NULL && size != 0) { \
@@ -13,6 +13,11 @@
 typedef enum {WHITE, GREY, BLACK} Colors_t;
 
 Profiler profiler("bfs");
+
+// [a, b]
+int random_int(int a, int b) {
+	return a +  1 + (int)((float)b * (rand() / (RAND_MAX + 1.0)));
+}
 
 void bfs_helper(DirectedGraph* graph, 
 				int start, 
@@ -56,6 +61,7 @@ void bfs(DirectedGraph* graph, const char* line = NULL, int size = 0) {
 	auto parents = new int[graph->vertices];
 	auto colors = new Colors_t[graph->vertices];
 	
+	//printf("For %s %d\n", line, size);
 	for (int i = 0; i < graph->vertices; i++) {
 		parents[i] = -1;
 		colors[i] = WHITE;
@@ -122,13 +128,13 @@ DirectedGraph* build_graph(int vertices, int edges) {
 	DirectedGraph* graph = new DirectedGraph(vertices);
 
 	for (int e = 0; e < edges; e++) {
-		int a = rand() % vertices;
+		int a = random_int(0, vertices - 1);
 		int b;
 
 		do {
 			b = a;
 			while (a == b)
-				b = rand() % vertices;
+				b = random_int(0, vertices - 1);
 		} while (graph->is_edge(a, b));
 
 		graph->add_edge(a, b);
@@ -137,18 +143,39 @@ DirectedGraph* build_graph(int vertices, int edges) {
 	return graph;
 }
 
-void analysis_variable_vertices() {
+// Fix vertices size. Vary the number of edges for each test.
+void analysis_variable_edges() {
+	int vertices = 100;
+	const char* line = "bfs_e";
 
+	for (int edges = 1000; edges <= 5000; edges += 100) {
+		DirectedGraph* graph = build_graph(vertices, edges);
+
+	
+		bfs(graph, line, edges);
+		delete graph;
+	}
 }
 
-void analysis_variable_edges() {
+void analysis_variable_vertices() {
+	int edges = 7000;
+	const char* line = "bfs_v";
 
+	for (int vertices = 100; vertices <= 200; vertices += 10) {
+		printf("%d\r", vertices);
+		DirectedGraph* graph = build_graph(vertices, edges);
+		
+		bfs(graph, line, vertices);
+		delete graph;
+	}
 }
 
 
 int main(void) {
 	test_queue();
 	test_graph();
+	analysis_variable_edges();
+	analysis_variable_vertices();
 	profiler.showReport();
 	return 0;
 }
