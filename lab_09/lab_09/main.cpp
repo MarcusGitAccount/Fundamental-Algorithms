@@ -1,7 +1,16 @@
+/*
+	Lab no: 10
+	Name: Marcus Pop
+	Group: @30229
+	Assignment: Implement BFS
+*/
+
+
 #include <stdio.h>
 #include "../../Profiler.h"
 #include "../../DirectedGraph_t.h"
 #include "../../Queue_t.h"
+#include "../../Miscellaneous.h"
 
 // #define TEST_ALGORITHMS
 
@@ -13,11 +22,6 @@
 typedef enum {WHITE, GREY, BLACK} Colors_t;
 
 Profiler profiler("bfs");
-
-// [a, b]
-int random_int(int a, int b) {
-	return a +  1 + (int)((float)b * (rand() / (RAND_MAX + 1.0)));
-}
 
 void bfs_helper(DirectedGraph* graph, 
 				int start, 
@@ -118,28 +122,24 @@ void test_graph() {
 	graph->add_edge(9, 10);
 	graph->add_edge(10, 6);
 
-
 	bfs(graph);
 	delete graph;
 	#undef TEST_ALGORITHMS
 }
 
-DirectedGraph* build_graph(int vertices, int edges) {
-	DirectedGraph* graph = new DirectedGraph(vertices);
+DirectedGraph* build_graph(int vertices_count, int edges_count) {
+	assert(edges_count < vertices_count * (vertices_count - 1) &&
+		"Assert wether edges_count is valid.");
 
-	for (int e = 0; e < edges; e++) {
-		int a = random_int(0, vertices - 1);
-		int b;
+	DirectedGraph* graph = new DirectedGraph(vertices_count);
+	Edge_t* edges = create_all_possible_edges(vertices_count);
 
-		do {
-			b = a;
-			while (a == b)
-				b = random_int(0, vertices - 1);
-		} while (graph->is_edge(a, b));
-
-		graph->add_edge(a, b);
+	shuffle_array(edges, edges_count);
+	for (int i = 0; i < edges_count; i++) {
+		graph->add_edge(std::get<0>(edges[i]), std::get<1>(edges[i]));
 	}
-
+	
+	delete edges;
 	return graph;
 }
 
@@ -151,7 +151,6 @@ void analysis_variable_edges() {
 	for (int edges = 1000; edges <= 5000; edges += 100) {
 		DirectedGraph* graph = build_graph(vertices, edges);
 
-	
 		bfs(graph, line, edges);
 		delete graph;
 	}
@@ -169,7 +168,6 @@ void analysis_variable_vertices() {
 		delete graph;
 	}
 }
-
 
 int main(void) {
 	test_queue();
