@@ -5,7 +5,6 @@
 	Assignment: Implement BFS
 */
 
-
 #include <stdio.h>
 #include "../../Profiler.h"
 #include "../../DirectedGraph_t.h"
@@ -61,10 +60,10 @@ void bfs_helper(DirectedGraph* graph,
 	delete queue;
 }
 
-void bfs(DirectedGraph* graph, const char* line = NULL, int size = 0) {
+void bfs(DirectedGraph* graph, const char* line = NULL, int size = 0, bool print = false) {
 	auto parents = new int[graph->vertices];
 	auto colors = new Colors_t[graph->vertices];
-	
+
 	//printf("For %s %d\n", line, size);
 	for (int i = 0; i < graph->vertices; i++) {
 		parents[i] = -1;
@@ -75,15 +74,13 @@ void bfs(DirectedGraph* graph, const char* line = NULL, int size = 0) {
 		if (colors[vertex] == WHITE)
 			bfs_helper(graph, vertex, parents, colors, line, size);
 
-	#ifdef TEST_ALGORITHMS
-		printf("Printing vertices' parents: ");
+	if (print) {
+	printf("Printing vertices' parents: ");
 		for (int i = 0; i < graph->vertices; i++) {
 			printf("%d ", parents[i]);
 		}
 		printf("\n");
-	#endif // TEST_ALGORITHMS
-
-
+	}
 }
 
 void test_queue() {
@@ -122,7 +119,7 @@ void test_graph() {
 	graph->add_edge(9, 10);
 	graph->add_edge(10, 6);
 
-	bfs(graph);
+	bfs(graph, NULL, 0, true);
 	delete graph;
 	#undef TEST_ALGORITHMS
 }
@@ -157,7 +154,7 @@ void analysis_variable_edges() {
 }
 
 void analysis_variable_vertices() {
-	int edges = 7000;
+	int edges = 9000;
 	const char* line = "bfs_v";
 
 	for (int vertices = 100; vertices <= 200; vertices += 10) {

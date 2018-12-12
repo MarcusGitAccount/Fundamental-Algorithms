@@ -24,11 +24,10 @@ void shuffle_array(T* array, int size) {
 	}
 }
 
-// Given a number of vertices of a directed graph
-// return all the possible edges.
-
 typedef std::tuple<int, int> Edge_t;
 
+// Given a number of vertices of a directed graph
+// return all the possible edges.
 Edge_t* create_all_possible_edges(int vertices) {
 	int size = (vertices * (vertices - 1)); // (vertices, 2) * 2
 	auto edges = new Edge_t[size]; 
