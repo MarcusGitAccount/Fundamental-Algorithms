@@ -36,3 +36,9 @@ Kruskal's Minimum Spanning Tree Algorithm
 
 9.) \
 Breadth First Search
+
+10.) \
+Depth First Search \
+Topological Sort \
+Strongly Connected Components using Tarjan's Algorithm \
+DFS edge detection(backward, forward, tree, cross)
