@@ -1,8 +1,11 @@
 #ifndef STACK_T_H
 # define STACK_T_H
 
+#include <cassert>
+
 template <typename T>
 class Stack {
+public:
 	template <typename T>
 	struct StackNode {
 		StackNode<T>* next;
@@ -16,7 +19,7 @@ class Stack {
 
 	Stack() {
 		this->head = NULL;
-		this->size = 0;
+		this->_size = 0;
 	}
 
 	~Stack() {
@@ -37,6 +40,11 @@ class Stack {
 
 		this->head = new_node;
 		this->_size++;
+	}
+
+	int peek() {
+		assert(!this->is_empty() && "Stack is not empty.");
+		return this->head->data;
 	}
 
 	// @returns true if an elemen was popped and false otherwise
